@@ -1,0 +1,39 @@
+# .gitignore para proyecto ASP.NET Core + Docker + Google Apps Script
+# Archivos y carpetas de build
+bin/
+obj/
+
+# Archivos de usuario y configuración local
+*.user
+*.vspscc
+*.vssscc
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Archivos de configuración de Rider/VSCode
+.idea/
+.vscode/
+
+# Archivos de logs
+*.log
+
+# Archivos de Docker
+**/Dockerfile*
+**/docker-compose*.yml*
+
+# Archivos de migraciones generados automáticamente
+Migrations/
+
+# Archivos de configuración sensibles
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# Otros
+*.db
+*.DS_Store
+Thumbs.db
+
+# Google Apps Script
+appsscript.json
