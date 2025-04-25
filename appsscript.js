@@ -1,14 +1,24 @@
-const API_URL = "https://spatial-spam-mountains-foul.trycloudflare.com/api/vehicle"; // URL pública de tu API
+const API_URL = "https://microwave-sing-sciences-starts.trycloudflare.com ";
+
+function getColIndexByName(cabecera, nombreColumna) {
+  return cabecera.indexOf(nombreColumna);
+}
 
 function enviarTodasLasFilas() {
   const hoja = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const datos = hoja.getDataRange().getValues();
+  const cabecera = datos[0];
+
+  const idxFecha = getColIndexByName(cabecera, "Marca temporal");
+  const idxPlaca = getColIndexByName(cabecera, "Placa:");
+  const idxConductor = getColIndexByName(cabecera, "Nombre Conductor:");
+
   for (let i = 1; i < datos.length; i++) {
     const fila = datos[i];
     const data = {
-      marcaTemporal: new Date(fila[0]).toISOString(),
-      placa: fila[2],
-      nombreConductor: fila[3]
+      marcaTemporal: fila[idxFecha], // Enviar la fecha tal como está
+      placa: fila[idxPlaca],
+      nombreConductor: fila[idxConductor]
     };
     const options = {
       method: "POST",
@@ -26,31 +36,18 @@ function enviarTodasLasFilas() {
 }
 
 function onFormSubmit(e) {
-  const fila = e.values;
-  let fecha = fila[0];
-  let fechaISO = "";
-  try {
-    // Si ya es formato ISO
-    if (fecha.match(/\d{4}-\d{2}-\d{2}T/)) {
-      fechaISO = fecha;
-    } else {
-      // Intenta parsear formato dd/MM/yyyy HH:mm:ss o similar
-      let partes = fecha.split(/[\/ :]/);
-      if (partes.length >= 5) {
-        let d = partes[0], m = partes[1], y = partes[2], h = partes[3], min = partes[4], s = partes[5] || "00";
-        fechaISO = new Date(`${y}-${m}-${d}T${h}:${min}:${s}`).toISOString();
-      } else {
-        fechaISO = new Date(fecha).toISOString();
-      }
-    }
-  } catch (err) {
-    fechaISO = new Date().toISOString();
-  }
+  const hoja = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const cabecera = hoja.getDataRange().getValues()[0];
 
+  const idxFecha = getColIndexByName(cabecera, "Marca temporal");
+  const idxPlaca = getColIndexByName(cabecera, "Placa:");
+  const idxConductor = getColIndexByName(cabecera, "Nombre Conductor:");
+
+  const fila = e.values;
   const data = {
-    marcaTemporal: fechaISO,
-    placa: fila[2],
-    nombreConductor: fila[3]
+    marcaTemporal: fila[idxFecha], // Enviar la fecha tal como está
+    placa: fila[idxPlaca],
+    nombreConductor: fila[idxConductor]
   };
 
   const options = {
