@@ -18,13 +18,6 @@ obj/
 # Archivos de logs
 *.log
 
-# Archivos de Docker
-**/Dockerfile*
-**/docker-compose*.yml*
-
-# Archivos de migraciones generados automáticamente
-Migrations/
-
 # Archivos de configuración sensibles
 appsettings.Development.json
 appsettings.Local.json

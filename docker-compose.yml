@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    ports:
+      - "1433:1433"
+    networks:
+      - vehicle-network
+
+  vehicleapi:
+    build: .
+    container_name: vehicleapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=VehiculosDB;User=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
+    ports:
+      - "8080:80"
+    depends_on:
+      - sqlserver
+    networks:
+      - vehicle-network
+    entrypoint: ["sh", "-c", "apt-get update && apt-get install -y wget && wget -O /wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && chmod +x /wait-for-it.sh && /wait-for-it.sh sqlserver:1433 -- dotnet VehicleAPI.dll"]
+
+networks:
+  vehicle-network:
+    driver: bridge
