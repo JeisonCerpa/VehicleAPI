@@ -11,10 +11,10 @@ public class RegistroVehiculo
     public string? SeguridadSocial { get; set; }
     public string? LicenciaConduccion { get; set; }
     public string? CertificadoRevision { get; set; }
+    public DateTime? FechaVencimientoLicencia { get; set; }
     public string? PerteneceEmpresa { get; set; }
     public DateTime? FechaVencimientoSoat { get; set; }
     public DateTime? FechaVencimientoRevision { get; set; }
-    public DateTime? FechaVencimientoLicencia { get; set; }
     public string? EntregaRecibe { get; set; }
     public string? FotoFrontalVehiculo { get; set; }
     public string? FotoLateralDerechoVehiculo { get; set; }
@@ -67,10 +67,10 @@ public class RegistroVehiculoDto
     public string? SeguridadSocial { get; set; }
     public string? LicenciaConduccion { get; set; }
     public string? CertificadoRevision { get; set; }
+    public string? FechaVencimientoLicencia { get; set; }
     public string? PerteneceEmpresa { get; set; }
     public string? FechaVencimientoSoat { get; set; }
     public string? FechaVencimientoRevision { get; set; }
-    public string? FechaVencimientoLicencia { get; set; }
     public string? EntregaRecibe { get; set; }
     public string? FotoFrontalVehiculo { get; set; }
     public string? FotoLateralDerechoVehiculo { get; set; }
