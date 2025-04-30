@@ -111,4 +111,5 @@ public class RegistroVehiculoDto
     public string? Observaciones { get; set; }
     public string? NombreConductorCC { get; set; }
     public string? NombreResponsableVehiculoCC { get; set; }
+    public bool? EsSync { get; set; } // Nuevo campo para distinguir sincronización
 }

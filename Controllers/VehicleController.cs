@@ -213,10 +213,9 @@ public class VehicleController : ControllerBase
         };
 
         var criticos = camposCriticos.Where(c => c.Valor == "Insuficiente" || c.Valor == "No").ToList();
-
         var alertaDestinatario = Environment.GetEnvironmentVariable("ALERTA_DESTINATARIO") ?? "destino@correo.com";
-
-        if (criticos.Any())
+        // Solo enviar correo si NO es sincronización masiva
+        if ((registro.EsSync == null || registro.EsSync == false) && criticos.Any())
         {
             string mensaje = $"{DateTime.Now:dd/MM/yyyy HH:mm:ss}\n\n" +
                 "Se detectaron problemas en la inspección del vehículo.\n\n" +

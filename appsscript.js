@@ -153,7 +153,8 @@ function syncPendientes() {
         FactoresImpidenMovilizacion: datosFila[48],
         Observaciones: datosFila[49],
         NombreConductorCC: datosFila[50],
-        NombreResponsableVehiculoCC: datosFila[51]
+        NombreResponsableVehiculoCC: datosFila[51],
+        EsSync: true // Solo en sincronización masiva
       };
 
       var opciones = {
