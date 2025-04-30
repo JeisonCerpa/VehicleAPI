@@ -1,13 +1,18 @@
+using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using VehicleAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
+Env.Load();
+
+var connectionString = Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__DEFAULTCONNECTION") ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<VehicleDbContext>(options =>
     options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+        connectionString,
+        ServerVersion.AutoDetect(connectionString)
     )
 );
 

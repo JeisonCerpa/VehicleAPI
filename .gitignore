@@ -22,6 +22,7 @@ obj/
 appsettings.Development.json
 appsettings.Local.json
 secrets.json
+.env
 
 # Otros
 *.db
