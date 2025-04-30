@@ -45,6 +45,9 @@ public class VehicleController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] RegistroVehiculoDto registro)
     {
+        // Log temporal para depuración
+        Console.WriteLine($"DEBUG FechaVencimientoSoat: '{registro.FechaVencimientoSoat}' Tipo: {registro.FechaVencimientoSoat?.GetType()} ");
+
         // Formatos posibles de fecha desde Google Sheets y otros sistemas
         var formatosFecha = new[] {
             "d/M/yyyy H:mm:ss", "dd/M/yyyy H:mm:ss", "d/MM/yyyy H:mm:ss", "dd/MM/yyyy H:mm:ss",
@@ -58,6 +61,15 @@ public class VehicleController : ControllerBase
             && !DateTime.TryParse(registro.MarcaTemporal, out marcaTemporal))
             return BadRequest("Formato de fecha inválido para MarcaTemporal");
 
+        // Validación robusta para FechaVencimientoSoat
+        var rawSoat = registro.FechaVencimientoSoat;
+        if (rawSoat == null)
+            Console.WriteLine("DEBUG FechaVencimientoSoat: null");
+        else if (rawSoat is string s && string.IsNullOrWhiteSpace(s))
+            Console.WriteLine("DEBUG FechaVencimientoSoat: string vacío o solo espacios");
+        else
+            Console.WriteLine($"DEBUG FechaVencimientoSoat: '{rawSoat}' Tipo: {rawSoat.GetType()} Valor Unicode: [{string.Join(",", rawSoat.ToCharArray().Select(c => ((int)c).ToString()))}]");
+
         DateTime? fechaVencimientoSoat = null;
         if (!string.IsNullOrWhiteSpace(registro.FechaVencimientoSoat))
         {
@@ -65,7 +77,7 @@ public class VehicleController : ControllerBase
                 || DateTime.TryParse(registro.FechaVencimientoSoat, out tempSoat))
                 fechaVencimientoSoat = tempSoat;
             else
-                return BadRequest("Formato de fecha inválido para FechaVencimientoSoat");
+                return BadRequest($"Formato de fecha inválido para FechaVencimientoSoat. Valor recibido: '{registro.FechaVencimientoSoat}'");
         }
 
         DateTime? fechaVencimientoRevision = null;
