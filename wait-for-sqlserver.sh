@@ -1,1 +1,0 @@
-﻿# wait-for-sqlserver.sh#!/bin/sh# Espera a que SQL Server estÃ© listo antes de iniciar la APIset -ehost="$1"shiftuntil nc -z "$host" 1433; do  >&2 echo "SQL Server no estÃ¡ listo - esperando..."  sleep 2done>&2 echo "SQL Server estÃ¡ listo - iniciando la API"exec "$@"

@@ -51,7 +51,7 @@ public class VehicleController : ControllerBase
         // Formatos posibles de fecha desde Google Sheets y otros sistemas
         var formatosFecha = new[] {
             "d/M/yyyy H:mm:ss", "dd/M/yyyy H:mm:ss", "d/MM/yyyy H:mm:ss", "dd/MM/yyyy H:mm:ss",
-            "d/M/yyyy HH:mm:ss", "dd/MM/yyyy HH:mm:ss",
+            "d/M/yyyy HH:mm:ss", "dd/M/yyyy HH:mm:ss",
             "d/M/yyyy", "dd/MM/yyyy", "d/MM/yyyy", "dd/M/yyyy",
             "yyyy-MM-dd", "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm:ssZ"
         };
@@ -60,6 +60,10 @@ public class VehicleController : ControllerBase
         if (!DateTime.TryParseExact(registro.MarcaTemporal, formatosFecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out marcaTemporal)
             && !DateTime.TryParse(registro.MarcaTemporal, out marcaTemporal))
             return BadRequest("Formato de fecha inválido para MarcaTemporal");
+
+        // Ajustar MarcaTemporal a zona horaria de Colombia (America/Bogota)
+        var colombiaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
+        var marcaTemporalCol = TimeZoneInfo.ConvertTime(marcaTemporal, colombiaTimeZone);
 
         // Validación robusta para FechaVencimientoSoat
         var rawSoat = registro.FechaVencimientoSoat;
@@ -115,7 +119,7 @@ public class VehicleController : ControllerBase
 
         var nuevoRegistro = new RegistroVehiculo
         {
-            MarcaTemporal = marcaTemporal,
+            MarcaTemporal = marcaTemporalCol, // Guardar en hora de Colombia
             Placa = placaFormateada,
             NombreConductor = registro.NombreConductor,
             TarjetaPropiedad = registro.TarjetaPropiedad,
@@ -217,7 +221,7 @@ public class VehicleController : ControllerBase
         // Solo enviar correo si NO es sincronización masiva
         if ((registro.EsSync == null || registro.EsSync == false) && criticos.Any())
         {
-            string mensaje = $"{DateTime.Now:dd/MM/yyyy HH:mm:ss}\n\n" +
+            string mensaje = $"{marcaTemporalCol:dd/MM/yyyy HH:mm:ss}\n\n" +
                 "Se detectaron problemas en la inspección del vehículo.\n\n" +
                 $"Placa: {registro.Placa}\n" +
                 $"Conductor: {registro.NombreConductor}\n\n" +
