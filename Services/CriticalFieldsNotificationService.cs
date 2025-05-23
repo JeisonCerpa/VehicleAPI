@@ -19,11 +19,8 @@ public class CriticalFieldsNotificationService : ICriticalFieldsNotificationServ
             ?? _configuration["AlertaSettings:Destinatario"] 
             ?? "destino@correo.com";
     }
-
-    /// <summary>
     /// Define los campos críticos y sus propiedades correspondientes en el modelo
-    /// </summary>
-    /// <returns>Array de campos críticos con nombres y propiedades</returns>
+    /// Array de campos críticos con nombres y propiedades
     private (string Nombre, string? Valor)[] GetCriticalFieldDefinitions(RegistroVehiculo registro)
     {
         return new (string Nombre, string? Valor)[] {
@@ -75,20 +72,15 @@ public class CriticalFieldsNotificationService : ICriticalFieldsNotificationServ
             ("Vehículo Autorizado Transitar", registro.VehiculoAutorizadoTransitar)
         };
     }
-
-    /// <summary>
     /// Obtiene los valores críticos que indican un problema
-    /// </summary>
-    /// <returns>Array de valores considerados críticos</returns>
+    /// Array de valores considerados críticos
     private string[] GetCriticalValues()
     {
         // En el futuro, esto podría venir de la configuración
         return new[] { "Insuficiente", "No" };
     }
 
-    /// <summary>
     /// Verifica si un registro tiene campos críticos con valores problemáticos
-    /// </summary>
     public List<(string Nombre, string? Valor)> ValidateCriticalFields(RegistroVehiculo registro)
     {
         var camposCriticos = GetCriticalFieldDefinitions(registro);
@@ -102,9 +94,8 @@ public class CriticalFieldsNotificationService : ICriticalFieldsNotificationServ
         return camposConProblemas;
     }
 
-    /// <summary>
     /// Formatea un mensaje de alerta para los campos críticos con problemas
-    /// </summary>
+
     public string FormatAlertMessage(RegistroVehiculo registro, List<(string Nombre, string? Valor)> camposCriticos)
     {
         string mensaje = $"{registro.MarcaTemporal:dd/MM/yyyy HH:mm:ss}\n\n" +
@@ -127,9 +118,7 @@ public class CriticalFieldsNotificationService : ICriticalFieldsNotificationServ
         return mensaje;
     }
 
-    /// <summary>
     /// Procesa los campos críticos y envía una notificación si es necesario
-    /// </summary>
     public bool ProcessCriticalFieldsAndNotify(RegistroVehiculo registro, bool? esSincronizacion)
     {
         // Validar campos críticos

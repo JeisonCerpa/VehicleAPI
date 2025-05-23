@@ -21,9 +21,7 @@ public class VehicleValidationService : IVehicleValidationService
         _logger = logger;
     }
 
-    /// <summary>
     /// Verifica si existe un registro duplicado con la misma placa y marca temporal
-    /// </summary>
     public async Task<bool> ExisteDuplicado(RegistroVehiculo registro)
     {
         try
@@ -40,9 +38,7 @@ public class VehicleValidationService : IVehicleValidationService
         }
     }
 
-    /// <summary>
     /// Valida un registro completo según reglas de negocio usando FluentValidation
-    /// </summary>
     public async Task<ValidationResult> ValidarRegistro(RegistroVehiculo registro)
     {
         var result = new ValidationResult();
@@ -74,9 +70,7 @@ public class VehicleValidationService : IVehicleValidationService
         return result;
     }
 
-    /// <summary>
     /// Realiza validaciones específicas para fechas
-    /// </summary>
     public List<string> ValidarFechas(RegistroVehiculo registro)
     {
         var errores = new List<string>();
