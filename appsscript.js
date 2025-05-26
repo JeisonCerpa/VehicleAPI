@@ -175,12 +175,3 @@ function syncPendientes() {
     }
   }
 }
-
-function crearTriggerDiario() {
-  // Crea un trigger para ejecutar syncPendientes todos los días a las 2:00 AM
-  ScriptApp.newTrigger('syncPendientes')
-    .timeBased()
-    .atHour(2)
-    .everyDays(1)
-    .create();
-}
