@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 public class FuelSupplyRecord
 {
     public int Id { get; set; }
@@ -5,8 +7,10 @@ public class FuelSupplyRecord
     public string? PlacasDelVehiculo { get; set; }
     public string? TipoCombustible { get; set; }
     public int? Kilometraje { get; set; }
-    public decimal? CantidadGalones { get; set; }
-    public decimal? ValorCombustible { get; set; }
+    [Column(TypeName = "decimal(10,3)")]
+    public decimal? CantidadGalones { get; set; } // decimal(10,3) recomendado
+    [Column(TypeName = "decimal(12,2)")]
+    public decimal? ValorCombustible { get; set; } // decimal(12,2) recomendado
     public string? DiligenciadoPor { get; set; }
 }
 
@@ -16,8 +20,8 @@ public class FuelSupplyRecordDto
     public string? PlacasDelVehiculo { get; set; }
     public string? TipoCombustible { get; set; }
     public int? Kilometraje { get; set; }
-    public decimal? CantidadGalones { get; set; }
-    public decimal? ValorCombustible { get; set; }
+    public decimal? CantidadGalones { get; set; } // decimal(10,3) recomendado
+    public decimal? ValorCombustible { get; set; } // decimal(12,2) recomendado
     public string? DiligenciadoPor { get; set; }
     public bool? EsSync { get; set; } // Nuevo campo para distinguir sincronización
 }
