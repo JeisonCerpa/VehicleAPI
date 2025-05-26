@@ -33,14 +33,16 @@ public class FuelSupplyController : ControllerBase
                 ValorCombustible = dto.ValorCombustible,
                 DiligenciadoPor = dto.DiligenciadoPor
             };
+            _logger.LogInformation("Intentando guardar registro: {@Record}", record);
             _context.FuelSupplies.Add(record);
             await _context.SaveChangesAsync();
             return Ok(new { Message = dto.EsSync == true ? "Validación exitosa (no se guardó en base de datos)" : "Registro de abastecimiento guardado", Id = record.Id });
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error al guardar registro de abastecimiento");
-            return StatusCode(500, new { Message = "Error interno al guardar el registro" });
+            _logger.LogError(ex, "Error al guardar registro de abastecimiento: {Error}", ex.Message);
+            // Para depuración, devolvemos el mensaje de error interno (no dejar en producción)
+            return StatusCode(500, new { Message = "Error interno al guardar el registro", Error = ex.ToString() });
         }
     }
 

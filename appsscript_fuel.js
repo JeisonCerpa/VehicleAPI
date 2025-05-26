@@ -13,27 +13,34 @@ function limpiarCampoFecha(valor) {
   return "";
 }
 
+function parseNumber(valor) {
+  if (valor === undefined || valor === null || valor === "") return null;
+  var num = Number(valor);
+  return isNaN(num) ? null : num;
+}
+
 function enviarAbastecimientoCombustible(datosFila, esSync) {
+  Logger.log("Datos fila recibidos: " + JSON.stringify(datosFila));
   var datos = {
     MarcaTemporal: limpiarCampoFecha(datosFila[0]),
     PlacasDelVehiculo: datosFila[1],
     TipoCombustible: datosFila[2],
-    Kilometraje: datosFila[3],
-    CantidadGalones: datosFila[4],
-    ValorCombustible: datosFila[5],
+    Kilometraje: parseNumber(datosFila[3]),
+    CantidadGalones: parseNumber(datosFila[4]),
+    ValorCombustible: parseNumber(datosFila[5]),
     DiligenciadoPor: datosFila[6],
     EsSync: esSync === true
   };
-
+  Logger.log("Payload enviado: " + JSON.stringify(datos));
   var opciones = {
     method: "post",
     contentType: "application/json",
     payload: JSON.stringify(datos),
     muteHttpExceptions: true
   };
-
   var respuesta = UrlFetchApp.fetch(FUEL_API_URL, opciones);
-  Logger.log(respuesta.getContentText());
+  Logger.log("Respuesta: " + respuesta.getContentText());
+  Logger.log("Status: " + respuesta.getResponseCode());
   return respuesta.getResponseCode();
 }
 
