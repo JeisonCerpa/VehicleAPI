@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql;
 using VehicleAPI.Models;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 namespace VehicleAPI.Data;
 
@@ -14,7 +14,7 @@ public class VehicleDbContext : DbContext
         if (!optionsBuilder.IsConfigured)
         {
             var connectionString = "name=DefaultConnection";
-            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            optionsBuilder.UseNpgsql(connectionString);
         }
     }
 }

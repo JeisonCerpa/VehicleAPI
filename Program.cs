@@ -61,10 +61,7 @@ if (string.IsNullOrEmpty(connectionString))
 logger.LogInformation("Configuración aplicada con éxito. Base de datos configurada.");
 
 builder.Services.AddDbContext<VehicleDbContext>(options =>
-    options.UseMySql(
-        connectionString,
-        ServerVersion.AutoDetect(connectionString)
-    )
+    options.UseNpgsql(connectionString)
 );
 
 // Register services with proper dependency injection
