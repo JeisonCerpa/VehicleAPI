@@ -25,7 +25,9 @@ public class FuelSupplyController : ControllerBase
         {
             var record = new FuelSupplyRecord
             {
-                MarcaTemporal = DateTime.ParseExact(dto.MarcaTemporal, new[] { "dd/MM/yyyy", "yyyy-MM-dd", "yyyy-MM-ddTHH:mm:ss.fffZ" }, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None),
+                MarcaTemporal = DateTime.SpecifyKind(
+                    DateTime.ParseExact(dto.MarcaTemporal, new[] { "dd/MM/yyyy", "yyyy-MM-dd", "yyyy-MM-ddTHH:mm:ss.fffZ" }, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None),
+                    DateTimeKind.Utc),
                 PlacasDelVehiculo = dto.PlacasDelVehiculo,
                 TipoCombustible = dto.TipoCombustible,
                 Kilometraje = dto.Kilometraje,
