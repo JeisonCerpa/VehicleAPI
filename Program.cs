@@ -120,5 +120,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 app.MapControllers();
-app.Urls.Add("http://0.0.0.0:80");
+
+// Usar el puerto de Render si está definido, o 80 por defecto
+var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
+app.Urls.Add($"http://0.0.0.0:{port}");
 app.Run();
