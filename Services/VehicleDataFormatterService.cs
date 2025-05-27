@@ -33,8 +33,9 @@ public class VehicleDataFormatterService : IVehicleDataFormatterService
             throw new ArgumentException("Formato de fecha inválido para MarcaTemporal");
         }
 
-        // Convertir a zona horaria de Colombia
-        return TimeZoneInfo.ConvertTime(resultado, _colombiaTimeZone);
+        // Convertir a zona horaria de Colombia y devolver como UTC
+        var colombiaTime = TimeZoneInfo.ConvertTime(resultado, _colombiaTimeZone);
+        return DateTime.SpecifyKind(colombiaTime, DateTimeKind.Utc);
     }
 
     public DateTime? FormatOptionalDate(string? fecha)
@@ -46,7 +47,8 @@ public class VehicleDataFormatterService : IVehicleDataFormatterService
             CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime resultado) 
             || DateTime.TryParse(fecha, out resultado))
         {
-            return resultado;
+            // Convertir a UTC si es posible
+            return DateTime.SpecifyKind(resultado, DateTimeKind.Utc);
         }
 
         throw new ArgumentException($"Formato de fecha inválido: {fecha}");
