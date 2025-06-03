@@ -21,16 +21,24 @@ function parseNumber(valor) {
 
 function enviarAbastecimientoCombustible(datosFila, esSync) {
   Logger.log("Datos fila recibidos: " + JSON.stringify(datosFila));
+  // Limpiar y validar campos
   var datos = {
     MarcaTemporal: limpiarCampoFecha(datosFila[0]),
-    PlacasDelVehiculo: datosFila[1],
-    TipoCombustible: datosFila[2],
+    PlacasDelVehiculo: (datosFila[1] || "").toString().trim(),
+    TipoCombustible: (datosFila[2] || "").toString().trim(),
     Kilometraje: parseNumber(datosFila[3]),
     CantidadGalones: parseNumber(datosFila[4]),
     ValorCombustible: parseNumber(datosFila[5]),
-    DiligenciadoPor: datosFila[6],
+    DiligenciadoPor: (datosFila[6] || "").toString().trim(),
     EsSync: esSync === true
   };
+  // Validar que al menos un campo relevante no esté vacío/nulo
+  var camposObligatorios = [datos.PlacasDelVehiculo, datos.TipoCombustible, datos.Kilometraje, datos.CantidadGalones, datos.ValorCombustible, datos.DiligenciadoPor];
+  var camposVacios = camposObligatorios.filter(function(x) { return x === null || x === undefined || x === ""; });
+  if (camposVacios.length === camposObligatorios.length) {
+    Logger.log("Advertencia: Payload vacío o inválido, no se envía la petición.");
+    return 400;
+  }
   Logger.log("Payload enviado: " + JSON.stringify(datos));
   var opciones = {
     method: "post",
